@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+TMPDIR=`mktemp -d`
+wget -q -O - "http://storage.googleapis.com/nativeclient-mirror/nacl/nacl_sdk/nacl_sdk.zip" > ${TMPDIR}/nacl_sdk.zip
+mkdir -p /usr/lib/nacl
+unzip -q -o ${TMPDIR}/nacl_sdk.zip -d /usr/lib/nacl
+rm -fr ${TMPDIR}
+cd /usr/lib/nacl/nacl_sdk
+./naclsdk update --force pepper_21
+chown -R root:root /usr/lib/nacl/nacl_sdk
+find /usr/lib/nacl/nacl_sdk -perm 600 | xargs chmod 644
+find /usr/lib/nacl/nacl_sdk -perm 700 | xargs chmod 755
+

@@ -1,0 +1,55 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+#
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+#
+# Modified to make a template file for a multi-binary package with separated
+# build-arch and build-indep targets  by Bill Allombert 2001
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+export NACL_SDK_ROOT=${HOME}/nacl_sdk/pepper_21
+export ZEROVM_ROOT=${HOME}/git/zerovm
+export ZRT_ROOT=${HOME}/git/zrt
+
+%:
+	dh $@ 
+
+override_dh_auto_build:
+	#make -C ../zerovm clean all
+	#make -C ../zrt clean all
+	#make -C ../zrt/samples/hello clean all
+
+override_dh_auto_install:
+	install -D -m 0755 $(ZEROVM_ROOT)/zerovm $(CURDIR)/debian/zerovm/usr/bin/zerovm
+	install -D -m 0644 $(ZEROVM_ROOT)/api/libzvm.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libzvm.a
+	install -D -m 0644 $(ZEROVM_ROOT)/api/zvm.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/zvm.h
+	install -D -m 0755 /usr/lib/nacl/nacl_sdk/pepper_21/tools/ncval_x86_64 $(CURDIR)/debian/zerovm/usr/bin/ncval
+	chrpath -d $(CURDIR)/debian/zerovm/usr/bin/ncval
+	install -D -m 0644 $(ZRT_ROOT)/lib/zrt.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/zrt.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/sqlite3/vfs_channel.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/sqlite3/vfs_channel.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/sqlite3/sqlite3.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/sqlite3/sqlite3.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/sqlite3/sqlite3ext.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/sqlite3/sqlite3ext.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/lua-5.2.1/src/lauxlib.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/lua/lauxlib.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/lua-5.2.1/src/lualib.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/lua/lualib.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/lua-5.2.1/src/lua.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/lua/lua.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/libzrt.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libzrt.a
+	install -D -m 0644 $(ZRT_ROOT)/lib/libfs.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libfs.a
+	install -D -m 0644 $(ZRT_ROOT)/lib/liblua.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/liblua.a
+	install -D -m 0644 $(ZRT_ROOT)/lib/libmapreduce.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libmapreduce.a
+	install -D -m 0644 $(ZRT_ROOT)/lib/libnetworking.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libnetworking.a
+	install -D -m 0644 $(ZRT_ROOT)/lib/libsqlite3.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libsqlite3.a
+	install -D -m 0644 $(ZRT_ROOT)/samples/hello/hello.c $(CURDIR)/debian/zerovm-dev/usr/share/zerovm/samples/hello/hello.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/hello/hello.manifest $(CURDIR)/debian/zerovm-dev/usr/share/zerovm/samples/hello/hello.manifest
+	install -D -m 0644 $(ZRT_ROOT)/samples/hello/hello.manifest.template $(CURDIR)/debian/zerovm-dev/usr/share/zerovm/samples/hello/hello.manifest.template
+	install -D -m 0644 $(CURDIR)/debian/samples/hello/Makefile $(CURDIR)/debian/zerovm-dev/usr/share/zerovm/samples/hello/Makefile
+
+override_dh_strip:
+

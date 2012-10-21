@@ -1,0 +1,59 @@
+Source: zerovm
+Section: devel
+Priority: extra
+Maintainer: Constantine Peresypkin <constantine@litestack.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.2
+Homepage: http://www.zerovm.org
+#Vcs-Git: git://git.debian.org/collab-maint/zerovm.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/zerovm.git;a=summary
+
+Package: zerovm
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Lightweight virtualization platform
+ ZeroVM is an open-source lightweight virtualization platform 
+ having the following features:
+ .
+    Recreatable per web request: metered by milliseconds
+    Storage-embeddable: moving processing closer to data
+    Near-zero overhead: high-performance, great for data-crunching
+    SIMD left reachable: fully-leveraging underlying hardware
+    Multi-tenancy-grade secure isolation: no need for inner sandbox
+    Deterministic: productive development and auto-recoverable VM
+    Network-neutral: inproc, IPC, RDMA, infiniband, TCP/IP anything
+    Easily Clusterable: no network virtualization needed
+    Host-OS neutral: decoupling VM abstraction from host OS abstraction
+    Language-neutral: C/C++/Assembly and hence anything else too
+
+Package: zerovm-dev
+Architecture: amd64
+Depends: zerovm, ${shlibs:Depends}, ${misc:Depends}
+Description: Lightweight virtualization platform headers and libs
+ ZeroVM is an open-source lightweight virtualization platform 
+ having the following features:
+ .
+    Recreatable per web request: metered by milliseconds
+    Storage-embeddable: moving processing closer to data
+    Near-zero overhead: high-performance, great for data-crunching
+    SIMD left reachable: fully-leveraging underlying hardware
+    Multi-tenancy-grade secure isolation: no need for inner sandbox
+    Deterministic: productive development and auto-recoverable VM
+    Network-neutral: inproc, IPC, RDMA, infiniband, TCP/IP anything
+    Easily Clusterable: no network virtualization needed
+    Host-OS neutral: decoupling VM abstraction from host OS abstraction
+    Language-neutral: C/C++/Assembly and hence anything else too
+
+Package: nacl-sdk
+Architecture: amd64
+Depends: python (>=2.6), wget, unzip, gcc-multilib, g++-multilib, ${shlibs:Depends}, ${misc:Depends}
+Description: A technology for running native compiled code in a sandbox
+ The Native Client open-source technology is designed to run native 
+ compiled code securely inside browsers. Native Client puts 
+ web applications on the same playing field as local applications, 
+ providing the raw speed needed to compete with traditional software 
+ like 3D games, video editing, and other applications. 
+ Native Client also gives languages like C and C++ 
+ (and eventually others as well) the same level of portability 
+ and safety that JavaScript provides on the web today.
+
