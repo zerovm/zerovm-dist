@@ -1,4 +1,4 @@
-PNACL_TOOL=/usr/lib/nacl/nack_sdk/pepper_21/toolchain/linux_x86_glibc
+PNACL_TOOL=/usr/lib/nacl/nacl_sdk/pepper_21/toolchain/linux_x86_glibc
 NAME=hello
 INCLUDE_FLAGS=-I/usr/include/zerovm
 
