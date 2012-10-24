@@ -18,6 +18,9 @@ export DH_OPTIONS
 export NACL_SDK_ROOT=${HOME}/nacl_sdk/pepper_21
 export ZEROVM_ROOT=${HOME}/git/zerovm
 export ZRT_ROOT=${HOME}/git/zrt
+export SAMPLE_DIR=${CURDIR}/debian/zerovm-dev/usr/share/zerovm/samples
+export INCLUDE_DIR=${CURDIR}/debian/zerovm-dev/usr/include/zerovm
+export NACL_STRIP=${NACL_SDK_ROOT}/toolchain/linux_x86_glibc/bin/x86_64-nacl-strip
 
 %:
 	dh $@ 
@@ -28,28 +31,99 @@ override_dh_auto_build:
 	#make -C ../zrt/samples/hello clean all
 
 override_dh_auto_install:
+	# zerovm
 	install -D -m 0755 $(ZEROVM_ROOT)/zerovm $(CURDIR)/debian/zerovm/usr/bin/zerovm
 	install -D -m 0644 $(ZEROVM_ROOT)/api/libzvm.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libzvm.a
-	install -D -m 0644 $(ZEROVM_ROOT)/api/zvm.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/zvm.h
+	install -D -m 0644 $(ZEROVM_ROOT)/api/zvm.h $(INCLUDE_DIR)/zvm.h
 	install -D -m 0755 /usr/lib/nacl/nacl_sdk/pepper_21/tools/ncval_x86_64 $(CURDIR)/debian/zerovm/usr/bin/ncval
 	chrpath -d $(CURDIR)/debian/zerovm/usr/bin/ncval
-	install -D -m 0644 $(ZRT_ROOT)/lib/zrt.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/zrt.h
-	install -D -m 0644 $(ZRT_ROOT)/lib/sqlite3/vfs_channel.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/sqlite3/vfs_channel.h
-	install -D -m 0644 $(ZRT_ROOT)/lib/sqlite3/sqlite3.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/sqlite3/sqlite3.h
-	install -D -m 0644 $(ZRT_ROOT)/lib/sqlite3/sqlite3ext.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/sqlite3/sqlite3ext.h
-	install -D -m 0644 $(ZRT_ROOT)/lib/lua-5.2.1/src/lauxlib.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/lua/lauxlib.h
-	install -D -m 0644 $(ZRT_ROOT)/lib/lua-5.2.1/src/lualib.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/lua/lualib.h
-	install -D -m 0644 $(ZRT_ROOT)/lib/lua-5.2.1/src/lua.h $(CURDIR)/debian/zerovm-dev/usr/include/zerovm/lua/lua.h
+	# zrt
+	install -D -m 0644 $(ZRT_ROOT)/lib/zrt.h $(INCLUDE_DIR)/zrt.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/sqlite3/vfs_channel.h $(INCLUDE_DIR)/sqlite3/vfs_channel.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/sqlite3/sqlite3.h $(INCLUDE_DIR)/sqlite3/sqlite3.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/sqlite3/sqlite3ext.h $(INCLUDE_DIR)/sqlite3/sqlite3ext.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/lua-5.2.1/src/lauxlib.h $(INCLUDE_DIR)/lua/lauxlib.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/lua-5.2.1/src/lualib.h $(INCLUDE_DIR)/lua/lualib.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/lua-5.2.1/src/lua.h $(INCLUDE_DIR)/lua/lua.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/lua-5.2.1/src/luaconf.h $(INCLUDE_DIR)/lua/luaconf.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/networking/channels_conf.h $(INCLUDE_DIR)/networking/channels_conf.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/networking/channels_conf_reader.h $(INCLUDE_DIR)/networking/channels_conf_reader.h
+	install -D -m 0644 $(ZRT_ROOT)/lib/networking/eachtoother_comm.h $(INCLUDE_DIR)/networking/eachtoother_comm.h
 	install -D -m 0644 $(ZRT_ROOT)/lib/libzrt.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libzrt.a
 	install -D -m 0644 $(ZRT_ROOT)/lib/libfs.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libfs.a
 	install -D -m 0644 $(ZRT_ROOT)/lib/liblua.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/liblua.a
 	install -D -m 0644 $(ZRT_ROOT)/lib/libmapreduce.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libmapreduce.a
 	install -D -m 0644 $(ZRT_ROOT)/lib/libnetworking.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libnetworking.a
 	install -D -m 0644 $(ZRT_ROOT)/lib/libsqlite3.a $(CURDIR)/debian/zerovm-dev/usr/lib/zerovm/libsqlite3.a
-	install -D -m 0644 $(ZRT_ROOT)/samples/hello/hello.c $(CURDIR)/debian/zerovm-dev/usr/share/zerovm/samples/hello/hello.c
-	install -D -m 0644 $(ZRT_ROOT)/samples/hello/hello.manifest $(CURDIR)/debian/zerovm-dev/usr/share/zerovm/samples/hello/hello.manifest
-	install -D -m 0644 $(ZRT_ROOT)/samples/hello/hello.manifest.template $(CURDIR)/debian/zerovm-dev/usr/share/zerovm/samples/hello/hello.manifest.template
-	install -D -m 0644 $(CURDIR)/debian/samples/hello/Makefile $(CURDIR)/debian/zerovm-dev/usr/share/zerovm/samples/hello/Makefile
-
+	# samples
+	install -D -m 0644 $(ZRT_ROOT)/ns_server.py $(SAMPLE_DIR)/ns_server.py
+	install -D -m 0755 $(ZRT_ROOT)/ns_start.sh $(SAMPLE_DIR)/ns_start.sh
+	install -D -m 0755 $(ZRT_ROOT)/ns_stop.sh $(SAMPLE_DIR)/ns_stop.sh
+	# samples/hello
+	install -D -m 0644 $(ZRT_ROOT)/samples/hello/hello.c $(SAMPLE_DIR)/hello/hello.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/hello/hello.manifest $(SAMPLE_DIR)/hello/hello.manifest
+	install -D -m 0644 $(ZRT_ROOT)/samples/hello/hello.manifest.template $(SAMPLE_DIR)/hello/hello.manifest.template
+	install -D -m 0644 $(CURDIR)/debian/samples/hello/Makefile $(SAMPLE_DIR)/hello/Makefile
+	# samples/readdir
+	install -D -m 0644 $(ZRT_ROOT)/samples/readdir/getdent_syscall.c $(SAMPLE_DIR)/readdir/getdent_syscall.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/readdir/readdir.c $(SAMPLE_DIR)/readdir/readdir.c
+	install -D -m 0755 $(CURDIR)/debian/samples/readdir/run_tests.sh $(SAMPLE_DIR)/readdir/run_tests.sh
+	install -D -m 0644 $(ZRT_ROOT)/samples/readdir/manifest_template/readdir.manifest.template $(SAMPLE_DIR)/readdir/readdir.manifest.template
+	install -D -m 0644 $(CURDIR)/debian/samples/readdir/Makefile $(SAMPLE_DIR)/readdir/Makefile
+	# samples/disort
+	install -d $(SAMPLE_DIR)/disort/data
+	install -d $(SAMPLE_DIR)/disort/log
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/README $(SAMPLE_DIR)/disort/README
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/manager/comm_man.h $(SAMPLE_DIR)/disort/manager/comm_man.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/manager/histanlz.h $(SAMPLE_DIR)/disort/manager/histanlz.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/manager/histanlz.c $(SAMPLE_DIR)/disort/manager/histanlz.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/manager/main_man.c $(SAMPLE_DIR)/disort/manager/main_man.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/manager/comm_man.c $(SAMPLE_DIR)/disort/manager/comm_man.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/manifest/sortdst.manifest.template $(SAMPLE_DIR)/disort/manifest/sortdst.manifest.template
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/manifest/sortman.manifest.template $(SAMPLE_DIR)/disort/manifest/sortman.manifest.template
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/manifest/generator.manifest.template $(SAMPLE_DIR)/disort/manifest/generator.manifest.template
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/manifest/sortsrc.manifest.template $(SAMPLE_DIR)/disort/manifest/sortsrc.manifest.template
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/dest/main_dst.c $(SAMPLE_DIR)/disort/dest/main_dst.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/dest/comm_dst.c $(SAMPLE_DIR)/disort/dest/comm_dst.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/dest/comm_dst.h $(SAMPLE_DIR)/disort/dest/comm_dst.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/dsort.c $(SAMPLE_DIR)/disort/dsort.c
+	install -D -m 0755 $(CURDIR)/debian/samples/disort/disort.sh $(SAMPLE_DIR)/disort/disort.sh
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/source/main_src.c $(SAMPLE_DIR)/disort/source/main_src.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/source/comm_src.c $(SAMPLE_DIR)/disort/source/comm_src.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/source/comm_src.h $(SAMPLE_DIR)/disort/source/comm_src.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/cpuid.h $(SAMPLE_DIR)/disort/cpuid.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/generator.uint32_t.c $(SAMPLE_DIR)/disort/generator.uint32_t.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/comm.c $(SAMPLE_DIR)/disort/comm.c
+	install -D -m 0755 $(ZRT_ROOT)/samples/disort/genmanifest.sh $(SAMPLE_DIR)/disort/genmanifest.sh
+	install -D -m 0755 $(CURDIR)/debian/samples/disort/gendata.sh $(SAMPLE_DIR)/disort/gendata.sh
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/bitonic_sort.c $(SAMPLE_DIR)/disort/bitonic_sort.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/distr_common.h $(SAMPLE_DIR)/disort/distr_common.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/bitonic_sort.h $(SAMPLE_DIR)/disort/bitonic_sort.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/cpuid.c $(SAMPLE_DIR)/disort/cpuid.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/sort.c $(SAMPLE_DIR)/disort/sort.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/sort.h $(SAMPLE_DIR)/disort/sort.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/comm.h $(SAMPLE_DIR)/disort/comm.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/dsort.h $(SAMPLE_DIR)/disort/dsort.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/disort/defines.h $(SAMPLE_DIR)/disort/defines.h
+	install -D -m 0644 $(CURDIR)/debian/samples/disort/Makefile $(SAMPLE_DIR)/disort/Makefile
+	# samples/zshell
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/lua/scripts/280x.png $(SAMPLE_DIR)/zshell/lua/scripts/280x.png
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/lua/scripts/hello.lua $(SAMPLE_DIR)/zshell/lua/scripts/hello.lua
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/lua/scripts/pngparse.lua $(SAMPLE_DIR)/zshell/lua/scripts/pngparse.lua
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/lua/scripts/command_line.lua $(SAMPLE_DIR)/zshell/lua/scripts/command_line.lua
+	install -D -m 0755 $(CURDIR)/debian/samples/zshell/run_sqlite_samples.sh $(SAMPLE_DIR)/zshell/run_sqlite_samples.sh
+	install -D -m 0755 $(ZRT_ROOT)/samples/zshell/genmanifest.sh $(SAMPLE_DIR)/zshell/genmanifest.sh
+	install -D -m 0755 $(CURDIR)/debian/samples/zshell/run_lua_samples.sh $(SAMPLE_DIR)/zshell/run_lua_samples.sh
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/zshell.h $(SAMPLE_DIR)/zshell/zshell.h
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/manifest_template/zshell.manifest.template $(SAMPLE_DIR)/zshell/manifest_template/zshell.manifest.template
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/main.c $(SAMPLE_DIR)/zshell/main.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/sqlitequery.c $(SAMPLE_DIR)/zshell/sqlitequery.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/luaexec.c $(SAMPLE_DIR)/zshell/luaexec.c
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/sqlite/data/zvm_netw.db $(SAMPLE_DIR)/zshell/sqlite/data/zvm_netw.db
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/sqlite/scripts/zerovm_config.sql $(SAMPLE_DIR)/zshell/sqlite/scripts/zerovm_config.sql
+	install -D -m 0644 $(ZRT_ROOT)/samples/zshell/sqlite/scripts/select.sql $(SAMPLE_DIR)/zshell/sqlite/scripts/select.sql
+	install -D -m 0644 $(CURDIR)/debian/samples/zshell/Makefile $(SAMPLE_DIR)/zshell/Makefile
+	
 override_dh_strip:
+	strip $(CURDIR)/debian/zerovm/usr/bin/ncval
 

@@ -10,4 +10,5 @@ cd /usr/lib/nacl/nacl_sdk
 chown -R root:root /usr/lib/nacl/nacl_sdk
 find /usr/lib/nacl/nacl_sdk -perm 600 | xargs chmod 644
 find /usr/lib/nacl/nacl_sdk -perm 700 | xargs chmod 755
+ln -s /usr/lib/nacl/nacl_sdk/pepper_21 /usr/lib/nacl/default-sdk
 
