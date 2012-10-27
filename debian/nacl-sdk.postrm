@@ -1,4 +1,0 @@
-#!/bin/sh -e
-
-rm -fr /usr/lib/nacl
-
